@@ -143,5 +143,13 @@ public class Solution {
         return newDigits;
     }
 
+    /**
+     * @Description: T(n)=O(); S(n)=O().
+     * @Author: yiyimi
+     * @Date: 2021/1/31 0031
+     */
+    public static int trap(int[] height) {
+        return -1;
+    }
 
 }
