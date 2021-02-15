@@ -1,5 +1,6 @@
 package algo;
 
+import algo.dataStructure.ListNode;
 import algo.dataStructure.Node;
 import algo.dataStructure.TreeNode;
 
@@ -303,6 +304,34 @@ public class Solution {
         }
         return res;
     }
+
+    public String replaceSpace(String s) {
+        StringBuilder sb = new StringBuilder();
+        char[] c = s.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            if (s.charAt(i) == ' ') {
+                sb.append("%20");
+            } else {
+                sb.append(s);
+            }
+        }
+        return sb.toString();
+    }
+
+    public int[] reversePrint(ListNode head) {
+        ListNode temp = head;
+        Stack<ListNode> stack = new Stack<>();
+        while (temp != null) {
+            stack.push(temp);
+            temp = temp.next;
+        }
+        int[] res = new int[stack.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = stack.pop().val;
+        }
+        return res;
+    }
+
 
 }
 
