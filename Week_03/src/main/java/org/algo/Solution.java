@@ -1,12 +1,41 @@
 package org.algo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Solution {
 
+    /**
+     * @author: yiyimi
+     * date: 2021.2.22 11:02
+     * @description: 全排列
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        int len = nums.length;
+        if (len == 0) return res;
+
+        boolean[] status = new boolean[len];
+        Deque<Integer> temp = new ArrayDeque<>();
+        permute(nums, len, 0, status, temp);
+        return res;
+    }
+
+    List<List<Integer>> res = new ArrayList<>();
+    private void permute(int[] nums, int len, int curr, boolean[] status, Deque<Integer> temp) {
+        if (curr == len) {
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int i = 0; i < len; i++) {
+            if (!status[i]) {
+                temp.addLast(nums[i]);
+                status[i] = true;
+                permute(nums, len, curr + 1, status, temp);
+
+                status[i] = false;
+                temp.removeLast();
+            }
+        }
+    }
 
     public List<List<Integer>> combine(int n, int k) {
         List<Integer> curr = new ArrayList<>();
