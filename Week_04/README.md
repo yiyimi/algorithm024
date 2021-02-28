@@ -9,3 +9,5 @@
 - 数组的首位置left、中间位置mid、最后位置right
 
 - 二分法的中间值mid划分的区间：一个有序，一个存在旋转点。
+- nums[mid] < nums[right]，则[mid, right]有序；
+- nums[mid] > nums[right]，则[left, mid]有序；
