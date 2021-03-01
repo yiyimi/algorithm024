@@ -210,6 +210,46 @@ public class Solution {
         return sameCnt == 1;
     }
 
+    /**
+     * @Description: 单词接龙(单向BFS)
+     * T(n)=O(N*C^2); S(n)=O(N*C^2).
+     * N:wordList.length; C:word.length.
+     * @Author: yiyimi
+     * @Date: 2021/3/1 0001
+     */
+    public int ladderLength_bak(String beginWord, String endWord, List<String> wordList) {
+        if (!wordList.contains(endWord)) return 0;
+        boolean[] visited = new boolean[wordList.size()];
+        int currIndex = wordList.indexOf(beginWord);
+        if (currIndex > -1) {
+            visited[currIndex] = true;
+        }
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        int count = 0;
+        while (queue.size() > 0) {
+            int size = queue.size();
+            count++;
+            while (size > 0) {
+                size--;
+                String currWord = queue.poll();
+                for (int i = 0; i < wordList.size(); i++) {
+                    if (visited[i]) continue;
+                    String checkWord = wordList.get(i);
+                    if (!checkConvert(currWord, checkWord)) {
+                        continue;
+                    }
+                    if (checkWord.equals(endWord)) {
+                        return count + 1;
+                    }
+                    visited[i] = true;
+                    queue.offer(checkWord);
+                }
+            }
+        }
+        return 0;
+    }
+
 
 
 }
