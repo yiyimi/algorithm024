@@ -116,7 +116,7 @@ public class Solution {
     }
 
     /**
-     * @Description: 搜索旋转排序数据
+     * @Description: 搜索旋转排序数据(二分)
      * T(n)=O(logn); S(n)=O(1). 
      * @Author: yiyimi
      * @Date: 2021/3/1 0001
@@ -144,6 +144,72 @@ public class Solution {
         }
         return -1;
     }
+
+        /**
+     * @Description: 单词接龙(双向BFS)
+     * T(n)=O(N*C^2); S(n)=O(N*C^2).
+     * N:wordList.length; C:word.length.
+     * @Author: yiyimi
+     * @Date: 2021/3/1 0001
+     */
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        int end = wordList.indexOf(endWord);
+        if (end < 0) return 0;
+        if (!wordList.contains(beginWord)) {
+            wordList.add(beginWord);
+        }
+        int start = wordList.indexOf(beginWord);
+        Queue<Integer> queue1 = new LinkedList<>();
+        Queue<Integer> queue2 = new LinkedList<>();
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> set2 = new HashSet<>();
+        queue1.offer(start);
+        queue2.offer(end);
+        set1.add(start);
+        set2.add(end);
+        int count = 0;
+        while (!queue1.isEmpty() && !queue2.isEmpty()) {
+            count++;
+            if (queue1.size() > queue2.size()) {
+                Queue<Integer> tmpQue = queue1;
+                queue1 = queue2;
+                queue2 = tmpQue;
+                Set<Integer> tmpSet = set1;
+                set1 = set2;
+                set2 = tmpSet;
+            }
+            int size = queue1.size();
+            while (size > 0) {
+                size--;
+                String currWord = wordList.get(queue1.poll());
+                for (int i = 0; i < wordList.size(); i++) {
+                    if (set1.contains(i)) continue;
+                    String checkWord = wordList.get(i);
+                    if (!checkConvert(currWord, checkWord)) {
+                        continue;
+                    }
+                    if (set2.contains(i)) {
+                        return count + 1;
+                    }
+                    set1.add(i);
+                    queue1.offer(i);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private boolean checkConvert(String currWord, String checkWord) {
+        int sameCnt = 0;
+        for (int i = 0; i < currWord.length(); i++) {
+            if (checkWord.charAt(i) != currWord.charAt(i)) {
+                sameCnt++;
+            }
+            if (sameCnt > 1) return false;
+        }
+        return sameCnt == 1;
+    }
+
 
 
 }
