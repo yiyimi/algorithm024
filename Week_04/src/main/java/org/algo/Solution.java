@@ -250,6 +250,40 @@ public class Solution {
         return 0;
     }
 
+    /**
+     * @Description: 模拟行走机器人
+     * T(n)=O(n+k); S(n)=O(k).
+     * n:commands.length; k:obstacles.length.
+     * @Author: yiyimi
+     * @Date: 2021/3/1 0001
+     */
+    public int robotSim(int[] commands, int[][] obstacles) {
+        Set<String> obsSet = new HashSet<>();
+        for (int[] obs : obstacles) {
+            obsSet.add(obs[0] + ", " + obs[1]);
+        }
+        int[][] dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int x = 0, y = 0, currDir = 0, maxSquare = 0;
+        for (int i = 0; i < commands.length; i++) {
+            if (commands[i] == -2) {
+                currDir = (currDir + 3) % 4;
+            } else if (commands[i] == -1) {
+                currDir = (currDir + 1) % 4;
+            } else {
+                int step = 0;
+                while (step < commands[i]
+                        && !obsSet.contains(
+                            (x + dirs[currDir][0]) + ", " + (y + dirs[currDir][1]))) {
+                    x += dirs[currDir][0];
+                    y += dirs[currDir][1];
+                    step++;
+                }
+                maxSquare = Math.max(maxSquare, x * x + y * y);
+            }
+        }
+        return maxSquare;
+    }
+
 
 
 }
