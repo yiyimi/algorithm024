@@ -49,6 +49,38 @@
         return dp[amount] == amount + 1? -1: dp[amount];
     }
 
+    /**
+     * @Description: 打家劫舍
+     * T(n)=O(n); S(n)=O(1).
+     * @Author: yiyimi
+     * @Date: 2021/3/10 0001
+     */
+    public int rob(int[] nums) {
+        if (nums == null || nums.length < 1) return 0;
+        int preSum = 0;
+        int currSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int temp = currSum;
+            currSum = Math.max(nums[i] + preSum, currSum);
+            preSum = temp;
+        }
+        return currSum;
+    }
+
+    /**
+     * @Description: 打家劫舍II (房屋围城一圈)
+     * T(n)=O(n); S(n)=O(1).
+     * @Author: yiyimi
+     * @Date: 2021/3/10 0001
+     */
+    public int robTwo(int[] nums) {
+        if (nums == null || nums.length < 1) return 0;
+        if (nums.length == 1) return nums[0];
+        int first = rob(Arrays.copyOfRange(nums, 0, nums.length - 2));
+        int last = rob(Arrays.copyOfRange(nums, 1, nums.length - 1));
+        return Math.max(first, last);
+    }
+
 
 
 ```
