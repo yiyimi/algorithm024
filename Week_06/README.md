@@ -111,6 +111,52 @@
         return res;
     }
 
+    /**
+     * @Description: 矩形区域不超过 K 的最大数值和
+     * T(m,n)=O(m^2 * n); S(m,n)=O(mn)
+     * m:matrix.row.leng; n:matrix.column.length.
+     * @Author: yiyimi
+     * @Date: 2021/3/12 0001
+     */
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int res = Integer.MIN_VALUE;
+        //l: col left; r: col right.
+        for (int l = 0; l < col; l++) {
+            int[] rowSum = new int[row];
+            for (int r = l; r < col; r++) {
+                for (int i = 0; i < row; i++) {
+                    rowSum[i] += matrix[i][r];
+                }
+                int currMax = getCurrentMax(rowSum, k);
+                res = Math.max(currMax, res);
+                if (res == k) return res;
+            }
+        }
+        return res;
+    }
+
+    private int getCurrentMax(int[] rowSum, int k) {
+        int curr = rowSum[0];
+        int max = curr;
+        for (int i = 1; i < rowSum.length; i++) {
+            if (curr > 0) curr += rowSum[i];
+            else curr = rowSum[i];
+            if (curr > max) max = curr;
+        }
+        if (max <= k) return max;
+        max = Integer.MIN_VALUE;
+        for (int l = 0; l < rowSum.length; l++) {
+            int temp = 0;
+            for (int r = l; r < rowSum.length; r++) {
+                temp += rowSum[r];
+                if (temp > max && temp <= k) max = temp;
+                if (max == k) return max;
+            }
+        }
+        return max;
+    }
 
 
 ```
