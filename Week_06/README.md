@@ -81,6 +81,36 @@
         return Math.max(first, last);
     }
 
+    /**
+     * @Description: 最大正方形
+     * T(m,n)=O(mn); S(m,n)=O(mn)
+     * m:matrix.row.leng; n:matrix.column.length.
+     * @Author: yiyimi
+     * @Date: 2021/3/12 0001
+     */
+    public int maximalSquare(char[][] matrix) {
+        int res = 0;
+        if (matrix == null) return res;
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int[][] dp = new int[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (matrix[i][j] == '1') {
+                    if (i == 0 || j == 0) {
+                        dp[i][j] = 1;
+                    } else {
+                        dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], Math.min(dp[i][j - 1], dp[i - 1][j]));
+                    }
+                } else {
+                    dp[i][j] = 0;
+                }
+                res = Math.max(dp[i][j] * dp[i][j], res);
+            }
+        }
+        return res;
+    }
+
 
 
 ```
