@@ -1,6 +1,8 @@
 package org.algo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Solution {
 
@@ -110,13 +112,69 @@ public class Solution {
 
     /**
      * @Description: 单词接龙II
-     * T(m,n)=O(m^2 * n); S(m,n)=O(mn)
-     * m:matrix.row.leng; n:matrix.column.length.
+     * T=O(C*(4*3^(L-1))); S=O(N)
+     * C:board.size; L:words.max length;
+     * N:trie.character.count.
      * @Author: yiyimi
      * @Date: 2021/3/12 0001
      */
-    public boolean exist(char[][] board, String word) {
-        return false;
+    char[][] tempBoard = null;
+    List<String> wordRes = new ArrayList<>();
+    public List<String> findWords(char[][] board, String[] words) {
+        TrieNode trieNode = new TrieNode();
+        for (String word : words) {
+            TrieNode currNode = trieNode;
+            for (Character character : word.toCharArray()) {
+                if (currNode.children.containsKey(character)) {
+                    currNode = currNode.children.get(character);
+                } else {
+                    TrieNode node = new TrieNode();
+                    currNode.children.put(character, node);
+                    currNode = node;
+                }
+            }
+            currNode.word = word;
+        }
+        this.tempBoard = board;
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (trieNode.children.containsKey(board[i][j])) {
+                    findWordsDFS(i, j, trieNode);
+                }
+            }
+        }
+        return this.wordRes;
+    }
+
+    private void findWordsDFS(int row, int col, TrieNode parent) {
+        Character currChar = this.tempBoard[row][col];
+        TrieNode currNode = parent.children.get(currChar);
+        if (currNode.word != null) {
+            this.wordRes.add(currNode.word);
+            currNode.word = null;
+        }
+        this.tempBoard[row][col] = '#';
+
+        int[] rowOffset = {-1, 0, 1, 0};
+        int[] colOffset = {0, 1, 0, -1};
+        for (int i = 0; i < 4; ++i) {
+            int newRow = row + rowOffset[i];
+            int newCol = col + colOffset[i];
+            if (newRow < 0 || newRow >= this.tempBoard.length || newCol < 0
+                    || newCol >= this.tempBoard[0].length) {
+                continue;
+            }
+            if (currNode.children.containsKey(this.tempBoard[newRow][newCol])) {
+                findWordsDFS(newRow, newCol, currNode);
+            }
+        }
+
+        this.tempBoard[row][col] = currChar;
+
+        if (currNode.children.isEmpty()) {
+            parent.children.remove(currChar);
+        }
     }
 
     /**
