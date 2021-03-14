@@ -2,9 +2,7 @@ package algo;
 
 import algo.dataStructure.ListNode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Solution {
 
@@ -151,5 +149,93 @@ public class Solution {
     public static int trap(int[] height) {
         return -1;
     }
+
+    /**
+     * @Description: 4sum
+     * T(n)=O(n^3); S(n)=O(n).
+     * @Author: yiyimi
+     * @Date: 2021/3/7 0007
+     */
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length < 4) return res;
+        Arrays.sort(nums);
+        int len = nums.length;
+        for (int i = 0; i < len - 3; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) break;
+            if (nums[i] + nums[len - 3] + nums[len - 2] + nums[len - 1] < target) continue;
+            for (int j = i + 1; j < len - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                if (nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) break;
+                if (nums[i] + nums[j] + nums[len - 2] + nums[len - 1] < target) continue;
+                int left = j + 1, right = len - 1;
+                int currTarget = target - nums[i] - nums[j];
+                while (left < right) {
+                    int curr = nums[left] + nums[right];
+                    if (curr == currTarget) {
+                        List<Integer> temp = new ArrayList<>();
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        temp.add(nums[left]);
+                        temp.add(nums[right]);
+                        res.add(temp);
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        left++;
+                        while (left < right && nums[right] == nums[right - 1]) right--;
+                        right--;
+                    } else if (curr < currTarget) {
+                        left++;
+                    } else {
+                        right--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * @Description: jump
+     * T(n)=O(n); S(n)=O(1).
+     * @Author: yiyimi
+     * @Date: 2021/3/7 0007
+     */
+    public int jump(int[] nums) {
+        if (nums == null || nums.length < 1) {
+            return 0;
+        }
+        int count = 0;
+        int currStep = 0;
+        int preStep = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > preStep) {
+                count++;
+                preStep = currStep;
+            }
+            if (i + nums[i] > currStep) {
+                currStep = i + nums[i];
+            }
+        }
+        return count;
+    }
+
+    public String replaceSpace(String s) {
+        StringBuilder  sb = new StringBuilder();
+        char[] sChar = s.toCharArray();
+        for (char curr : sChar) {
+            if (curr == ' ') {
+                sb.append("%20");
+            } else {
+                sb.append(curr);
+            }
+        }
+        return sb.toString();
+    }
+
+    public int search(int[] nums, int target) {
+        int left =
+    }
+
 
 }

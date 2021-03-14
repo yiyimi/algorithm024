@@ -217,4 +217,23 @@ public class Solution {
         return null;
     }
 
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix == null || matrix.length < 1) return false;
+        int rowLen = matrix[0].length;
+        int colLen = matrix.length;
+        int left = 0, right = rowLen * colLen - 1;
+        int mid;
+        while (left <= right) {
+            mid = (left + right) / 2;
+            if (matrix[mid / rowLen][mid % rowLen] == target) {
+                return true;
+            } else if (matrix[mid / rowLen][mid % rowLen] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return false;
+    }
+
 }
