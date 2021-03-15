@@ -62,6 +62,27 @@ public class Solution {
         }
         return res;
     }
+    
+    /**
+     * @Description: 回文子串
+     * T(n)=O(n^2); S(n)=O(1)
+     * @Author: yiyimi
+     * @Date: 2021/3/15 0001
+     */
+    public int countSubstrings(String s) {
+        int len = s.length();
+        int res = 0;
+        for (int i = 0; i < len * 2 - 1; i++) {
+            int left = i / 2;
+            int right = i / 2 + i % 2;
+            while (left >= 0 && right < len && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+                res++;
+            }
+        }
+        return res;
+    }
 
     /**
      * @Description: 矩形区域不超过 K 的最大数值和
