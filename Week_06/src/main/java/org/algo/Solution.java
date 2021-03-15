@@ -33,6 +33,34 @@ public class Solution {
         return dp[row - 1][col - 1];
     }
 
+        /**
+     * @Description: 解码方法
+     * T(n)=O(n); S(n)=O(1)
+     * @Author: yiyimi
+     * @Date: 2021/3/15 0001
+     */
+    public int numDecodings(String s) {
+        if (s.isEmpty() || s.charAt(0) == '0') {
+            return 0;
+        }
+        int dpPre = 1;
+        int dpCurr = 1;
+        for (int i = 1; i < s.length(); i++) {
+            int temp = dpCurr;
+            int preChar = s.charAt(i - 1);
+            if (s.charAt(i) == '0') {
+                if (preChar != '1' && preChar != '2') return 0;
+                dpCurr = dpPre;
+            } else {
+                if (preChar == '1' || (preChar == '2' && s.charAt(i) >= '1' && s.charAt(i) <= '6')) {
+                    dpCurr += dpPre;
+                }
+            }
+            dpPre = temp;
+        }
+        return dpCurr;
+    }
+
     /**
      * @Description: 最大正方形
      * T(m,n)=O(mn); S(m,n)=O(mn)
